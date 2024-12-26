@@ -5,5 +5,5 @@ const mongoose = require('mongoose');
 const server = http.createServer(app);
 
 server.listen(port, () => {
-    console.log(`server is runnig ${port}`)
+    console.log(`server is running at ${port}`)
 });
