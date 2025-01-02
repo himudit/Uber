@@ -1,19 +1,34 @@
 import React, { useState } from 'react'
 import logouber from '../assets/logouberblack.png'
-import { Link } from 'react-router-dom'
-
+import { Link, useNavigate } from 'react-router-dom'
+import { UserDataContext } from '../context/UserContext';
+import axios from 'axios';
 
 function UserLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userData, setUserData] = useState({});
 
-  const submitHandler = (e) => {
+  const navigate = useNavigate();
+  const { user, setUser } = React.useContext(UserDataContext);
+
+  const submitHandler = async (e) => {
     e.preventDefault();
     setUserData({
       email: email,
       password: password,
     })
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, {
+      email: email,
+      password: password
+    });
+    if (response.status === 200) {
+      const data = response.data
+      setUser(data.user)
+      localStorage.setItem('token', data.token);
+      navigate('/home');
+    }
+
     setEmail('');
     setPassword('');
   }
@@ -46,7 +61,7 @@ function UserLogin() {
             type="password"
             placeholder='passwod' />
 
-          <button
+          <button onClick={submitHandler}
             className='bg-[#111] text-white font-semibold mb-3  rounded px-4 py-2 w-full text-lg '
           >Login</button>
         </form>

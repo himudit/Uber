@@ -3,7 +3,7 @@ import logouber from '../assets/logouber.png'
 import bg_img from '../assets/home-background.jpg'
 import { Link } from 'react-router-dom'
 
-function Home() {
+function Start() {
   return (
     <div>
       <div className='h-screen pt-8 flex justify-between flex-col w-full bg-red-400 bg-cover bg-center'
@@ -20,4 +20,4 @@ function Home() {
   )
 }
 
-export default Home
+export default Start

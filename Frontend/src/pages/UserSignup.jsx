@@ -1,28 +1,55 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import logouber from '../assets/logouberblack.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import { UserDataContext } from '../context/UserContext';
 
 function UserSignup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [firstname, setFirstName] = useState('');
+  const [lastname, setLastName] = useState('');
   const [userData, setUserData] = useState({});
 
-  const submitHandler = (e) => {
+  const navigate = useNavigate();
+  const { user, setUser } = React.useContext(UserDataContext);
+
+  const submitHandler = async (e) => {
     e.preventDefault();
-    setUserData({
-      username: {
-        firstName: firstName,
-        lastName: lastName,
-      },
-      email: email,
-      password: password
-    });
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setPassword('');
+    try {
+      setUserData({
+        fullname: {
+          firstname: firstname,
+          lastname: lastname,
+        },
+        email: email,
+        password: password
+      });
+
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, {
+        fullname: {
+          firstname: firstname,
+          lastname: lastname,
+        },
+        email: email,
+        password: password
+      });
+
+      if (response.status === 201) {
+        const data = response.data
+        setUser(data.user);
+        localStorage.setItem('token', data.token);
+        navigate('/home');
+      }
+
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPassword('');
+
+    } catch (err) {
+      console.log(err);
+    }
   }
   return (
     <div className='p-7 h-screen flex flex-col justify-between'>
@@ -33,7 +60,7 @@ function UserSignup() {
           <div className='flex gap-4 mb-5'>
             <input
               required
-              value={firstName}
+              value={firstname}
               onChange={(e) => {
                 setFirstName(e.target.value)
               }}
@@ -42,7 +69,7 @@ function UserSignup() {
               placeholder='First name' />
             <input
               required
-              value={lastName}
+              value={lastname}
               onChange={(e) => {
                 setLastName(e.target.value)
               }}
@@ -74,7 +101,7 @@ function UserSignup() {
             type="password"
             placeholder='passwod' />
 
-          <button
+          <button onClick={submitHandler}
             className='bg-[#111] text-white font-semibold mb-3  rounded px-4 py-2 w-full text-lg '
           >Create account</button>
         </form>
