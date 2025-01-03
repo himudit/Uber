@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import logouber from '../assets/logouberdriver.png'
 import { Link } from 'react-router-dom'
 import { CaptainDataContext } from '../context/CaptainContext';
 import { useNavigate } from 'react-router-dom'
@@ -61,7 +62,7 @@ const CaptainSignup = () => {
   return (
     <div className='py-5 px-5 h-screen flex flex-col justify-between'>
       <div>
-        <img className='w-20 mb-3' src="https://www.svgrepo.com/show/505031/uber-driver.svg" alt="" />
+        <img className='w-20 mb-3' src={logouber} alt="" />
 
         <form onSubmit={(e) => {
           submitHandler(e)

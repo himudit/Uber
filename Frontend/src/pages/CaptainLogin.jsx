@@ -21,8 +21,6 @@ function CaptainLogin() {
 
     const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, captain)
 
-    console.log('Response:', response); // Log response to debug
-
     if (response.status === 201) {
       const data = response.data
 
