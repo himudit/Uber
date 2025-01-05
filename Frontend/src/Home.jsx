@@ -3,7 +3,9 @@ import logouber from './assets/logouberblack.png'
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import 'remixicon/fonts/remixicon.css'
-import LocationSearchPanel from './assets/LocationSearchPanel';
+import LocationSearchPanel from './components/LocationSearchPanel';
+import VehiclePanel from './components/VehiclePanel';
+import ConfirmedRide from './components/ConfirmedRide';
 
 function Home() {
     const [pickup, setPickup] = useState('');
@@ -11,10 +13,14 @@ function Home() {
     const [panelOpen, setPanelOpen] = useState(false)
     const panelRef = useRef(null);
     const panelCloseRef = useRef(null)
-
+    const [vehiclePanelOpen, setVehiclePanelOpen] = useState(false)
+    const vehiclePanelRef = useRef(null);
+    const [confirmRidePanelOpen, setConfirmRidePanelOpen] = useState(false)
+    const confirmRidePanelRef = useRef(null);
     const submitHandler = (e) => {
         e.preventDefault();
     }
+
     useGSAP(function () {
         if (panelOpen == true) {
             gsap
@@ -40,10 +46,34 @@ function Home() {
         }
     }, [panelOpen]);
 
+    useGSAP(function () {
+        if (vehiclePanelOpen == true) {
+            gsap.to(vehiclePanelRef.current, {
+                transform: 'translateY(0)'
+            })
+        } else {
+            gsap.to(vehiclePanelRef.current, {
+                transform: 'translateY(100%)'
+            })
+        }
+    }, [vehiclePanelOpen]);
+
+    useGSAP(function () {
+        if (confirmRidePanelOpen == true) {
+            gsap.to(confirmRidePanelRef.current, {
+                transform: 'translateY(0)'
+            })
+        } else {
+            gsap.to(confirmRidePanelRef.current, {
+                transform: 'translateY(100%)'
+            })
+        }
+    }, [confirmRidePanelOpen]);
+
     return (
         <div className='h-screen relative overflow-hidden'>
-            <img className='w-16 mb-10' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYQy-OIkA6In0fTvVwZADPmFFibjmszu2A0g&s" alt="" />
-            <div className='h-screen w-screen'>
+            <img className='w-16 absolute top-5 left-5 ' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYQy-OIkA6In0fTvVwZADPmFFibjmszu2A0g&s" alt="" />
+            <div className='h-screen cursor-pointer w-screen border'>
                 <img src={logouber} />
             </div>
             <div className='flex  flex-col justify-end h-screen absolute top-0 w-full'>
@@ -80,46 +110,18 @@ function Home() {
                     </form>
                 </div>
                 <div ref={panelRef} className='h-[0] bg-white '>
-                    <LocationSearchPanel />
+                    <LocationSearchPanel
+                        setPanelOpen={setPanelOpen}
+                        setVehiclePanelOpen={setVehiclePanelOpen} />
                 </div>
             </div>
 
-            <div className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-8">
-                <h3 className='text-2xl font-semibold mb-5'>Choose a Vehicle</h3>
-
-                <div className='flex border-2 active:border-black mb-2 rounded-xl w-full p-3 items-center justify-between'>
-                    <img className='h-10' src='https://swyft.pl/wp-content/uploads/2023/05/how-many-people-can-a-uberx-take.jpg' alt="" />
-                    <div className='ml-2 w-1/2'>
-                        <h4 className='font-medium text-base'>UberGo<span><i className='ri-user-3-fill'></i>4</span></h4>
-                        <h5 className='font-medium text-sm'>2 mins away</h5>
-                        <p className='font-normal text-xs text-gray-600'>Affordable, compact rides</p>
-                    </div>
-                    <h2 className='text-xl font-semibold'>₹193.20</h2>
-                </div>
-
-                <div className='flex border-2 active:border-black mb-2 rounded-xl w-full p-3 items-center justify-between'>
-                    <img className='h-10' src='https://swyft.pl/wp-content/uploads/2023/05/how-many-people-can-a-uberx-take.jpg' alt="" />
-                    <div className='ml-2 w-1/2'>
-                        <h4 className='font-medium text-base'>Moto<span><i className='ri-user-3-fill'></i>1</span></h4>
-                        <h5 className='font-medium text-sm'>3 mins away</h5>
-                        <p className='font-normal text-xs text-gray-600'>Affordable, motorcycle rides</p>
-                    </div>
-                    <h2 className='text-xl font-semibold'>₹65</h2>
-                </div>
-
-                <div className='flex border-2 active:border-black mb-2 rounded-xl w-full p-3 items-center justify-between'>
-                    <img className='h-10' src='https://swyft.pl/wp-content/uploads/2023/05/how-many-people-can-a-uberx-take.jpg' alt="" />
-                    <div className='ml-2 w-1/2'>
-                        <h4 className='font-medium text-base'>UberAuto<span><i className='ri-user-3-fill'></i>4</span></h4>
-                        <h5 className='font-medium text-sm'>3 mins away</h5>
-                        <p className='font-normal text-xs text-gray-600'>Affordable, Auto rides</p>
-                    </div>
-                    <h2 className='text-xl font-semibold'>₹118.86</h2>
-                </div>
-
-
+            <div ref={vehiclePanelRef} className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12">
+                <VehiclePanel setConfirmRidePanelOpen={setConfirmRidePanelOpen} setVehiclePanelOpen={setVehiclePanelOpen} />
             </div>
-
+            <div ref={confirmRidePanelRef} className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12">
+                <ConfirmedRide setConfirmRidePanelOpen={setConfirmRidePanelOpen} />
+            </div>
         </div>
     )
 }
