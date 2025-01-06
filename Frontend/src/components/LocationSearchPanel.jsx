@@ -1,7 +1,6 @@
 import React from 'react'
 
 const LocationSearchPanel = (props) => {
-    // console.log(props);
     return (
         <div>
             <div onClick={() => {
