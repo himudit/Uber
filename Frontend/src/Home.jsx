@@ -159,7 +159,7 @@ function Home() {
                 <LookingForDriver setVehicleFound={setVehicleFound} />
             </div>
 
-            <div ref={waitingForDriverdRef} className="fixed w-full z-10 bottom-0 bg-white px-3 py-6 pt-12">
+            <div ref={waitingForDriverdRef}  className="fixed w-full z-10 bottom-0 bg-white px-3 py-6 pt-12">
                 <WaitingForDriver setWaitingForDriver={setWaitingForDriver} />
             </div>
         </div>
